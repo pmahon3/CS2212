@@ -13,15 +13,16 @@ public class SupplierProxy extends Proxy{
 		next = new LowQuantityProxy();
 	}
 
-	@Override
+	//get the next object in the chain to handle a placeOrder request
 	public void placeOrder(Map<String, Integer> orderDetails, Buyer buyer) throws Throwable {
-		// TODO Auto-generated method stub
+		next.placeOrder(orderDetails, buyer);
 		
 	}
 
-	@Override
+	//SupplierProxy can handle restock requests
 	public void restock(Map<String, Integer> restockDetails, Supplier supplier) {
-		// TODO Auto-generated method stub
+		Facade facade = new Facade();
+		facade.restock(restockDetails, supplier);
 		
 	}
 
