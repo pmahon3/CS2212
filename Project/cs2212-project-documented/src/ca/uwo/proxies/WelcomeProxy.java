@@ -26,7 +26,6 @@ public class WelcomeProxy extends Proxy {
 	
 	/* (non-Javadoc)
 	 * constructor for WelcomeProxy class.
-	 * 
 	 */
 	
 	public WelcomeProxy() {
@@ -78,6 +77,9 @@ public class WelcomeProxy extends Proxy {
 	}
 	
 	
+	/* (non-Javadoc)
+	 * 
+	 */
 	private boolean authorize(Buyer buyer) throws AuthenticationException {
 		
 		System.out.println("How would you like to login:");
