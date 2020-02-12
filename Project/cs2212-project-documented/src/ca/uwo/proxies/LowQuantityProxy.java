@@ -15,15 +15,23 @@ public class LowQuantityProxy extends Proxy{
 		
 	}
 
-	@Override
+	/*
+	 * LowQuantityProxy handles orders that have less than 10 items
+	 * Otherwise, placeOrder request is passes to HighQuantityProxy
+	 */
 	public void placeOrder(Map<String, Integer> orderDetails, Buyer buyer) throws Throwable {
-		// TODO Auto-generated method stub
+		if(NUMOFITEMS < 10) {
+			Facade facade = new Facade();
+			facade.placeOrder(orderDetails, buyer);
+		}
+		else {
+			next.placeOrder(orderDetails, buyer);
+		}
 		
 	}
 
-	@Override
+	//LowQuantityProxy will not handle any restock requests
 	public void restock(Map<String, Integer> restockDetails, Supplier supplier) {
-		// TODO Auto-generated method stub
 		
 	}
 
