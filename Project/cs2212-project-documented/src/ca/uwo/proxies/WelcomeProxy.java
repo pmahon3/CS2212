@@ -1,7 +1,5 @@
 package ca.uwo.proxies;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -83,8 +81,8 @@ public class WelcomeProxy extends Proxy {
 	private boolean authorize(Buyer buyer) throws AuthenticationException {
 		
 		System.out.println("How would you like to login:");
-		System.out.println("Enter 1 for username and password");
-		System.out.println("Enter 2 for PIN");
+		System.out.println("Enter 1 for username and password.");
+		System.out.println("Enter 2 for PIN.");
 		
 		String val = sc.nextLine();
 		

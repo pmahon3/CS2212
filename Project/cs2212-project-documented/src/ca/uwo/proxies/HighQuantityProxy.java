@@ -4,6 +4,7 @@ import java.util.Map;
 
 import ca.uwo.client.Buyer;
 import ca.uwo.client.Supplier;
+import ca.uwo.frontend.Facade;
 
 public class HighQuantityProxy extends Proxy{
 	

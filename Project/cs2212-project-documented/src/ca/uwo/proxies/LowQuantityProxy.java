@@ -4,6 +4,7 @@ import java.util.Map;
 
 import ca.uwo.client.Buyer;
 import ca.uwo.client.Supplier;
+import ca.uwo.frontend.Facade;
 
 public class LowQuantityProxy extends Proxy{
 	
@@ -20,7 +21,10 @@ public class LowQuantityProxy extends Proxy{
 	 * Otherwise, placeOrder request is passes to HighQuantityProxy
 	 */
 	public void placeOrder(Map<String, Integer> orderDetails, Buyer buyer) throws Throwable {
-		if(NUMOFITEMS < 10) {
+		
+		int numItems = this.numItems(orderDetails);
+		
+		if(numItems < 10) {
 			Facade facade = new Facade();
 			facade.placeOrder(orderDetails, buyer);
 		}
@@ -34,6 +38,14 @@ public class LowQuantityProxy extends Proxy{
 	public void restock(Map<String, Integer> restockDetails, Supplier supplier) {
 		
 	}
-
 	
+	private int numItems(Map<String, Integer> orderDetails) {
+		Object[] arr = orderDetails.values().toArray();
+		int total = 0;
+		for ( int i = 0 ; i < arr.length ; i++ ) {
+			total = total + (int)arr[i];
+		}
+		
+		return total;
+	}
 }
