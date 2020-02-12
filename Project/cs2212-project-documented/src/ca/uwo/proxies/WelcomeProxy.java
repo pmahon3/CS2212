@@ -80,7 +80,8 @@ public class WelcomeProxy extends Proxy {
 	 */
 	private boolean authorize(Buyer buyer) throws AuthenticationException {
 		
-		System.out.println("How would you like to login:");
+		return true;
+		/*System.out.println("How would you like to login:");
 		System.out.println("Enter 1 for username and password.");
 		System.out.println("Enter 2 for PIN.");
 		
@@ -127,6 +128,6 @@ public class WelcomeProxy extends Proxy {
 		}
 		
 		throw new AuthenticationException();
-		
+	*/
 	}
 }
