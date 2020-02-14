@@ -2,6 +2,8 @@ package ca.uwo.proxies;
 
 import java.util.Map;
 
+import javax.naming.AuthenticationException;
+
 import ca.uwo.client.Buyer;
 import ca.uwo.client.Supplier;
 import ca.uwo.frontend.Facade;
@@ -25,6 +27,14 @@ public class LowQuantityProxy extends Proxy{
 		int numItems = this.numItems(orderDetails);
 		
 		if(numItems < 10) {
+			
+			try {
+				buyer.authorize();
+			}
+			catch( AuthenticationException e) {
+				System.out.println(e);
+				return;
+			}
 			Facade facade = new Facade();
 			facade.placeOrder(orderDetails, buyer);
 		}
@@ -48,4 +58,5 @@ public class LowQuantityProxy extends Proxy{
 		
 		return total;
 	}
+	
 }

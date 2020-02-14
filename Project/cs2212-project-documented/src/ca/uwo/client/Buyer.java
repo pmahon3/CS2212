@@ -1,6 +1,7 @@
 package ca.uwo.client;
 
 import java.util.Map;
+import java.util.Scanner;
 
 import javax.naming.AuthenticationException;
 
@@ -13,6 +14,7 @@ import ca.uwo.utils.Invoice;
  */
 public class Buyer extends Client {
 	
+	private Scanner sc = new Scanner(System.in);
 	private String userName;
 
 	private String password;
@@ -69,8 +71,70 @@ public class Buyer extends Client {
 	/**
 	 * @return the password of the Buyer.
 	 */
-	public String getPassword() {
+	private String getPassword() {
 		return password;
+	}
+	
+	/* (non-Javadoc)
+	 *  authorize authenticates the buyer by username and password, 
+	 *  PIN, or in special circumstances by calling an agent. 
+	 *  Currently no backend agent representation is implemented.
+	 *  @return true if authentication is valid, false otherwise.
+	 */
+	public boolean authorize() throws AuthenticationException {
+		
+		System.out.println("How would you like to login:");
+		System.out.println("Enter 1 for username and password.");
+		System.out.println("Enter 2 for PIN.");
+		
+		String val = sc.nextLine();
+		
+		switch( val ) {
+		
+			case "1":
+				
+				for ( int i = 3 ; i > 0 ; i-- ) {
+					
+					System.out.println( Integer.toString(i) + " attempts remaining." );
+					
+					System.out.print("Please enter your username:");
+					String uName = sc.nextLine();
+					System.out.print("Please enter your password:");
+					String pwd = sc.nextLine();
+			
+					if ( uName.equals(this.getUserName()) && pwd.equals(this.getPassword())) return true;
+					System.out.println("Invalid username or password.");
+				}
+				throw new AuthenticationException("Invalid username or password. Maximum attempts exceeded.");
+				
+			case "2":
+				
+				for ( int i = 3 ; i > 0 ; i-- ) {
+					
+					System.out.println( Integer.toString(i) + " attempts remaining." );
+					
+					System.out.print("Please enter your PIN:");
+					String pin = sc.nextLine();
+					
+					
+					
+					if (  pin.equals(this.getPassword()) ) return true;
+					
+					System.out.println("Invalid PIN.");
+				}
+				throw new AuthenticationException("Invalid PIN. Maximum attempts exceeded.");
+				
+			case "agent":
+				
+				System.out.println("Calling agent...");
+				return true;
+				
+			default:
+				
+				this.authorize();
+		}
+		
+		throw new AuthenticationException();
 	}
 
 }
