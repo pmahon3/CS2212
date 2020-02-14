@@ -1,5 +1,7 @@
 package ca.uwo.client;
 
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -75,17 +77,27 @@ public class Buyer extends Client {
 		return password;
 	}
 	
-	/* (non-Javadoc)
+	/**
 	 *  authorize authenticates the buyer by username and password, 
 	 *  PIN, or in special circumstances by calling an agent. 
-	 *  Currently no backend agent representation is implemented.
+	 *  Currently no backend agent representation is implemented and
+	 *  PIN authorization just considers the password as PIN. 
+	 *  switchStream statements are used to silence the output stream
+	 *  originating from the StockManager thread.
 	 *  @return true if authentication is valid, false otherwise.
 	 */
 	public boolean authorize() throws AuthenticationException {
 		
-		System.out.println("How would you like to login:");
-		System.out.println("Enter 1 for username and password.");
-		System.out.println("Enter 2 for PIN.");
+		PrintStream sysOut = System.out;
+		PrintStream dummy = new PrintStream(new OutputStream() {
+			public void write(int b) {}
+		});
+		
+	
+		this.switchStream(sysOut, dummy, "How would you like to login:\n"
+				+ "Enter 1 for username and password.\n"
+				+ "Enter 2 for PIN.\n");
+
 		
 		String val = sc.nextLine();
 		
@@ -95,46 +107,66 @@ public class Buyer extends Client {
 				
 				for ( int i = 3 ; i > 0 ; i-- ) {
 					
-					System.out.println( Integer.toString(i) + " attempts remaining." );
-					
-					System.out.print("Please enter your username:");
-					String uName = sc.nextLine();
-					System.out.print("Please enter your password:");
-					String pwd = sc.nextLine();
 			
-					if ( uName.equals(this.getUserName()) && pwd.equals(this.getPassword())) return true;
+					this.switchStream( sysOut, dummy, Integer.toString(i) + " attempts remaining.\n"
+							+ "Please enter your username:");
+					String uName = sc.nextLine();
+					this.switchStream(sysOut, dummy, "Please enter your password:\n");
+					String pwd = sc.nextLine();
+				
+					
+					if ( uName.equals(this.getUserName()) && pwd.equals(this.getPassword())) {
+						System.setOut(sysOut);
+						return true;
+					}
+					System.setOut(sysOut);
 					System.out.println("Invalid username or password.");
 				}
+				System.setOut(sysOut);
 				throw new AuthenticationException("Invalid username or password. Maximum attempts exceeded.");
 				
 			case "2":
 				
 				for ( int i = 3 ; i > 0 ; i-- ) {
 					
-					System.out.println( Integer.toString(i) + " attempts remaining." );
-					
-					System.out.print("Please enter your PIN:");
+					this.switchStream(sysOut, dummy, Integer.toString(i) + " attempts remaining.\n"
+							+ "Please enter your PIN:");
 					String pin = sc.nextLine();
 					
 					
 					
-					if (  pin.equals(this.getPassword()) ) return true;
+					if (  pin.equals(this.getPassword()) ) {
+						System.setOut(sysOut);
+						return true;
+					}
 					
-					System.out.println("Invalid PIN.");
+					this.switchStream(sysOut, dummy, "Invalid PIN.");
 				}
+				System.setOut(sysOut);
 				throw new AuthenticationException("Invalid PIN. Maximum attempts exceeded.");
 				
 			case "agent":
 				
-				System.out.println("Calling agent...");
+				this.switchStream(sysOut, dummy, "Calling agent...");
+				System.setOut(sysOut);
 				return true;
 				
 			default:
 				
-				this.authorize();
+				throw new AuthenticationException("Invalid login option.");
 		}
-		
-		throw new AuthenticationException();
 	}
-
+	
+	/**
+	 * switchStream is used to silence threads running print statements and print lines
+	 * for user input. 
+	 * @param sysOut System.out print stream.
+	 * @param dummy a dummy print stream to silence output from sysOut.
+	 * @param str the string to be printed.
+	 */
+	private void switchStream(PrintStream sysOut, PrintStream dummy, String str){
+		System.setOut(sysOut);
+		System.out.println(str);
+		System.setOut(dummy);
+	}
 }
