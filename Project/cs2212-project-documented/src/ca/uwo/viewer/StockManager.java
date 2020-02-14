@@ -72,6 +72,8 @@ public class StockManager extends Viewer implements Runnable {
 	 */
 	@Override
 	public void run() {
+		//code has been commented out until restock methods are properly implemented 
+		/*
 		while (true) {
 			System.out.println("Stockmanager looking for potential orders...");
 			if (!restockDetails.isEmpty())
@@ -84,7 +86,7 @@ public class StockManager extends Viewer implements Runnable {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
+		}*/
 	}
 
 }
