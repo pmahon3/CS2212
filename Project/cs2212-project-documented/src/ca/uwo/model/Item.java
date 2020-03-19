@@ -127,5 +127,29 @@ public class Item {
 		ItemResult itemResult = new ItemResult("RESTOCKED", ResponseCode.Completed);
 		return itemResult;
 	}
+	
+	public void addViewer(Viewer newViewer) {
+		
+		viewers.add(newViewer);
+		
+	}
+	
+	public void removeViewer(Viewer delViewer) {
+		
+		int indexNum = viewers.indexOf(delViewer);
+		
+		viewers.remove(indexNum);
+		
+	}
+	
+	public void notifyViewer() {
+		
+		for (Viewer currentViewer : viewers) {
+			currentViewer.inform(this);
+		}
+
+
+		
+	}
 
 }
