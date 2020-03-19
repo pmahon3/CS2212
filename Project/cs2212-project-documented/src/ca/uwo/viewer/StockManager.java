@@ -31,10 +31,10 @@ public class StockManager extends Viewer implements Runnable {
 	 */
 	private StockManager() {
 		super();
-		restockDetails.put("apple", 50);
-		restockDetails.put("pear", 50);
-		restockDetails.put("mango", 50);
-		restockDetails.put("onions", 50);
+		// restockDetails.put("apple", 50);
+		// restockDetails.put("pear", 50);
+		// restockDetails.put("mango", 50);
+		// restockDetails.put("onions", 50);
 		Thread t = new Thread(this);
 		t.start();
 	}
@@ -45,6 +45,7 @@ public class StockManager extends Viewer implements Runnable {
 	@Override
 	public void inform(Item item) {
 		// Do appropriate action when informed of items being out of stock
+		restockDetails.put(item.getName(), 50);
 	}
 
 	// TODO make concurrent
@@ -54,9 +55,9 @@ public class StockManager extends Viewer implements Runnable {
 	public void order() {
 		System.out.println("restocked with " + restockDetails);
 		Supplier supplier = new Supplier();
-		supplier.supply(restockDetails);
-		//restockDetails.clear();
-	}
+		supplier.supply(restockDetails); 
+		restockDetails.clear(); //was commented 
+	}	
 
 	/**
 	 * set restock strategy for the Item.
