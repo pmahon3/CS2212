@@ -3,14 +3,14 @@ package ca.uwo.frontend;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import warehouse.banking.BankingTransactions;
-import warehouse.client.Buyer;
-import warehouse.client.Supplier;
-import warehouse.controller.Controller;
-import warehouse.frontend.interfaces.FacadeCommands;
-import warehouse.utils.Invoice;
-import warehouse.utils.Order;
-import warehouse.utils.OrderItem;
+import ca.uwo.banking.BankingTransactions;
+import ca.uwo.client.Buyer;
+import ca.uwo.client.Supplier;
+import ca.uwo.controller.Controller;
+import ca.uwo.frontend.interfaces.FacadeCommands;
+import ca.uwo.utils.Invoice;
+import ca.uwo.utils.Order;
+import ca.uwo.utils.OrderItem;
 
 /**
  * @author kkontog, ktsiouni, mgrigori
