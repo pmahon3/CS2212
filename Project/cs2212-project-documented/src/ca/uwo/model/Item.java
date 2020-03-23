@@ -108,7 +108,7 @@ public class Item {
 			itemResult = new ItemResult("AVAILABLE", ResponseCode.Completed);
 		}
 
-		this.state = ItemStateFactory.create(quantity);
+		this.state = ItemStateFactory.create(availableQuantity);
 		this.setAvailableQuantity(availableQuantity);
 		return itemResult;
 	}
@@ -128,7 +128,7 @@ public class Item {
 		this.setAvailableQuantity(availableQuantity);
 		ItemResult itemResult = new ItemResult("RESTOCKED", ResponseCode.Completed);
 		
-		this.state = ItemStateFactory.create(quantity);
+		this.state = ItemStateFactory.create(availableQuantity);
 		return itemResult;
 	}
 	
