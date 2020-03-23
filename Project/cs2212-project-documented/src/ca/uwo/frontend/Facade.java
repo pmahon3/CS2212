@@ -15,52 +15,44 @@ import ca.uwo.utils.OrderItem;
 /**
  * @author kkontog, ktsiouni, mgrigori
  * This class hides the complexities of the system by exposing only high level interfaces 
- * to the {@link warehouse.proxies.Proxy} class (using Facade design pattern), it utilizes operations in the 
- * {@link warehouse.controller.Controller} for the interface implementations.
+ * to the {@link ca.uwo.proxies.Proxy} class (using Facade design pattern), it utilizes operations in the 
+ * {@link ca.uwo.controller.Controller} for the interface implementations.
  */
 public class Facade implements FacadeCommands {
 	private Controller controller;
 	private BankingTransactions bank;
-	private static Facade instance = null;
-	
-	/**
-	 * there should be only one instance of Facade.
-	 * @return the instance of Facade class.
-	 */
-	public static Facade getInstance() {
-		if (instance == null)
-			instance = new Facade();
-		
-		return instance;
-	}
 	
 	/**
 	 * constructor for Facade class.
 	 */
-	private Facade() {
+	public Facade() {
 		super();
-		this.controller = Controller.getInstance();
+		this.controller = new Controller();
 		this.bank = new BankingTransactions();
 	}
 	
 	/* (non-Javadoc)
-	 * @see warehouse.frontend.interfaces.FacadeCommands#placeOrder(java.util.Map, warehouse.client.Buyer)
+	 * @see ca.uwo.frontend.interfaces.FacadeCommands#placeOrder(java.util.Map, ca.uwo.client.Buyer)
 	 */
 	@Override
 	public void placeOrder(Map<String, Integer> orderDetails, Buyer buyer) {
 		//The buyer places the order according to orderDetails. The stock should be depleted
 		//accordingly and the buyer needs to make the payment using the invoice.
 		System.out.println("Facade: ");
-		Order myOrder = createOrder(orderDetails, buyer.getUserName());
+		// Create order
+		Order order = this.createOrder(orderDetails, buyer.getUserName());
 		System.out.println("\tPlacing Order");
-		controller.depleteStock(myOrder);
+		// Deplete stock
+		controller.depleteStock(order);
 		System.out.println("\tCreating Invoice");
+		// Create invoice for order
 		Invoice invoice = controller.createInvoice();
+		// Receive payment from client
 		bank.receivePayment(invoice, buyer);
 	}
 	
 	/* (non-Javadoc)
-	 * @see warehouse.frontend.interfaces.FacadeCommands#restock(java.util.Map, warehouse.client.Supplier)
+	 * @see ca.uwo.frontend.interfaces.FacadeCommands#restock(java.util.Map, ca.uwo.client.Supplier)
 	 */
 	@Override
 	public void restock(Map<String, Integer> restockDetails, Supplier supplier) {
@@ -68,9 +60,11 @@ public class Facade implements FacadeCommands {
 		//replenished accordingly and the supplier need to get paid.
 		System.out.println("Facade: ");
 		// Create the order
-		Order myOrder = createOrder(restockDetails, "supplier");
+		Order order = this.createOrder(restockDetails, "supplier");
 		System.out.println("\tReplenishing Stock");
-		controller.replenishStock(myOrder);
+		// Replenish stock according to order
+		controller.replenishStock(order);
+		// Pay the supplier
 		bank.paySupplier(supplier);
 	}
 	
