@@ -42,6 +42,7 @@ public class Item {
 		this.availableQuantity = quantity;
 		this.price = price;
 		this.viewers = new ArrayList<Viewer>();
+		this.state = ItemStateFactory.create(quantity);
 		
 		// Adding viewers thus implementing part of the Observer design pattern
 		this.viewers.add(StockManager.getInstance());
@@ -107,6 +108,7 @@ public class Item {
 			itemResult = new ItemResult("AVAILABLE", ResponseCode.Completed);
 		}
 
+		this.state = ItemStateFactory.create(quantity);
 		this.setAvailableQuantity(availableQuantity);
 		return itemResult;
 	}
@@ -125,6 +127,8 @@ public class Item {
 		availableQuantity += quantity;
 		this.setAvailableQuantity(availableQuantity);
 		ItemResult itemResult = new ItemResult("RESTOCKED", ResponseCode.Completed);
+		
+		this.state = ItemStateFactory.create(quantity);
 		return itemResult;
 	}
 	
