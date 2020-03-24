@@ -117,10 +117,10 @@ public class Item {
 	 * @return execution result of the replenish action.
 	 */
 	public ItemResult replenish(int quantity) {
-		/* Replenishg the item with quantity according to its state and re-evaluate the items state.
+		/* Replenish the item with quantity according to its state and re-evaluate the items state.
 		 * Return the result of the replenish operation.
 		 */
-		ItemResult itemResult = new ItemResult("RESTOCKED", ResponseCode.Completed);
+		ItemResult itemResult = this.state.replenish(this, quantity);
 		this.state = ItemStateFactory.create(this.getAvailableQuantity());
 		return itemResult;
 	}
