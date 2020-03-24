@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.uwo.model.item.states.ItemState;
+import ca.uwo.model.item.states.InStockState;
+import ca.uwo.model.item.states.LowStockState;
+import ca.uwo.model.item.states.OutOfStockState;
+import ca.uwo.model.item.states.ItemStateFactory;
 import ca.uwo.utils.ItemResult;
 import ca.uwo.utils.ResponseCode;
 import ca.uwo.viewer.Messenger;
@@ -47,9 +51,9 @@ public class Item {
 		// Adding viewers thus implementing part of the Observer design pattern
 		this.viewers.add(StockManager.getInstance());
 		this.viewers.add(Messenger.getInstance());
-
-		// When you add states to items make sure you
-		// initialize them using the proper STATE!!!!
+		
+		// Intialize State
+		this.state = ItemStateFactory.create(quantity);
 
 	}
 
@@ -97,19 +101,11 @@ public class Item {
 	 * @return execution result of the deplete action.
 	 */
 	public ItemResult deplete(int quantity) {
-		// Deplete the item with quantity and return the execution result of
-		// deplete action.
-		ItemResult itemResult;
-		int availableQuantity = this.getAvailableQuantity();
-		if (availableQuantity < quantity) {
-			itemResult = new ItemResult("OUT OF STOCK", ResponseCode.Not_Completed);
-		} else {
-			availableQuantity -= quantity;
-			itemResult = new ItemResult("AVAILABLE", ResponseCode.Completed);
-		}
-
-		this.state = ItemStateFactory.create(availableQuantity);
-		this.setAvailableQuantity(availableQuantity);
+		/* Deplete the item with quantity according to its state and re-evaluate the items state.
+		 * Return the result of the deplete operation
+		 */
+		ItemResult itemResult = this.state.deplete(this, quantity);
+		this.state = ItemStateFactory.create(this.getAvailableQuantity());
 		return itemResult;
 	}
 
@@ -121,14 +117,11 @@ public class Item {
 	 * @return execution result of the replenish action.
 	 */
 	public ItemResult replenish(int quantity) {
-		// Replenish the item with quantity and return the execution result of
-		// replenish action.
-		int availableQuantity = this.getAvailableQuantity();
-		availableQuantity += quantity;
-		this.setAvailableQuantity(availableQuantity);
+		/* Replenishg the item with quantity according to its state and re-evaluate the items state.
+		 * Return the result of the replenish operation.
+		 */
 		ItemResult itemResult = new ItemResult("RESTOCKED", ResponseCode.Completed);
-		
-		this.state = ItemStateFactory.create(availableQuantity);
+		this.state = ItemStateFactory.create(this.getAvailableQuantity());
 		return itemResult;
 	}
 	
