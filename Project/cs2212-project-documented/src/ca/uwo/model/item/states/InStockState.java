@@ -29,10 +29,12 @@ public class InStockState implements ItemState {
 		if( availableQuantity < quantity ) {
 			availableQuantity = 0;
 			result = new ItemResult("OUT OF STOCK", ResponseCode.Partially_Completed);
+			item.notifyViewer();
 		}
 		else if( availableQuantity == quantity) {
 			availableQuantity = 0;
 			result = new ItemResult("OUT OF STOCK", ResponseCode.Completed);
+			item.notifyViewer();
 		}
 		else {
 			availableQuantity -= quantity;
@@ -60,7 +62,10 @@ public class InStockState implements ItemState {
 		ItemResult result;
 		
 		if (availableQuantity > 0) result = new ItemResult("AVAILABLE", ResponseCode.Completed);
-		else result = new ItemResult("OUT OF STOCK", ResponseCode.Completed);
+		else {
+			result = new ItemResult("OUT OF STOCK", ResponseCode.Completed);
+			item.notifyViewer();
+		}
 		
 		item.setAvailableQuantity(availableQuantity);
 		return result;
