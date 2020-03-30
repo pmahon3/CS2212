@@ -45,7 +45,10 @@ public class StockManager extends Viewer implements Runnable {
 	@Override
 	public void inform(Item item) {
 		// Do appropriate action when informed of items being out of stock
-		restockDetails.put(item.getName(), 50);
+		String itemName = item.getName();
+		int quantity = item.getAvailableQuantity();
+		double price = item.getPrice();
+		restockDetails.put(item.getName(), restockStrategy.calculateQuantity(itemName, quantity, price));
 	}
 
 	// TODO make concurrent
