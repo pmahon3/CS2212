@@ -140,13 +140,9 @@ public class Item {
 	}
 	
 	public void notifyViewer() {
-		
 		for (Viewer currentViewer : viewers) {
 			currentViewer.inform(this);
 		}
-
-
-		
 	}
 
 }

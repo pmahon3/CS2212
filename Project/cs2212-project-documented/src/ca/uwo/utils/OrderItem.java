@@ -74,6 +74,7 @@ public class OrderItem {
 		this.quantity = quantity;
 		this.price = -1.0;
 		this.itemResult = null;
+		this.pricingStrategy = IndividualPricingStrategyRepo.getInstance().getStrategy(itemName);
 	}
 
 	/**
