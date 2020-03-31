@@ -15,14 +15,21 @@ import ca.uwo.frontend.Facade;
  */
 public class WelcomeProxy extends Proxy {
 	
+	private static WelcomeProxy instance;
+	
 	protected Proxy next;
 	
 	/* (non-Javadoc)
 	 * constructor for WelcomeProxy class.
 	 */
 	
-	public WelcomeProxy() {
-		next = new SupplierProxy();
+	private WelcomeProxy() {
+		next = SupplierProxy.getInstance();
+	}
+	
+	public static WelcomeProxy getInstance() {
+		if ( instance == null) instance = new WelcomeProxy();
+		return instance;
 	}
 
 	/* (non-Javadoc)

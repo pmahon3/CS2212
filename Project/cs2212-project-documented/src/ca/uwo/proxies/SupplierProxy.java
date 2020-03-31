@@ -7,11 +7,18 @@ import ca.uwo.client.Supplier;
 import ca.uwo.frontend.Facade;
 
 public class SupplierProxy extends Proxy{
+
+	private static SupplierProxy instance = null;
 	
 	protected Proxy next;
 	
-	public SupplierProxy(){
-		next = new LowQuantityProxy();
+	private SupplierProxy(){
+		next = LowQuantityProxy.getInstance();
+	}
+	
+	public static SupplierProxy getInstance() {
+		if ( instance == null) instance = new SupplierProxy();
+		return instance;
 	}
 
 	//get the next object in the chain to handle a placeOrder request

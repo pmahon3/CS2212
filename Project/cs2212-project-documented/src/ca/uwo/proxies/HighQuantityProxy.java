@@ -10,13 +10,21 @@ import ca.uwo.frontend.Facade;
 
 public class HighQuantityProxy extends Proxy{
 	
+	private static HighQuantityProxy instance;
+	
+	
 	protected Proxy next;
 	
 	//HighQuantityProxy is the last object in the chain of responsibility, so next is set to null
-	public HighQuantityProxy() {
+	private HighQuantityProxy() {
 		
 		next = null;
 		
+	}
+	
+	public static HighQuantityProxy getInstance() {
+		if ( instance == null ) instance = new HighQuantityProxy();
+		return instance;
 	}
 
 	//Handles all orders with more than 10 items

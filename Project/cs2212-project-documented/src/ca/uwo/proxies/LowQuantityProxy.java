@@ -10,12 +10,19 @@ import ca.uwo.frontend.Facade;
 
 public class LowQuantityProxy extends Proxy{
 	
+	private static LowQuantityProxy instance;
+	
 	protected Proxy next;
 	
-	public LowQuantityProxy() {
+	private LowQuantityProxy() {
 		
-		next = new HighQuantityProxy();
+		next = HighQuantityProxy.getInstance();
 		
+	}
+	
+	public static LowQuantityProxy getInstance() {
+		if ( instance == null ) instance = new LowQuantityProxy();
+		return instance;
 	}
 
 	/*
