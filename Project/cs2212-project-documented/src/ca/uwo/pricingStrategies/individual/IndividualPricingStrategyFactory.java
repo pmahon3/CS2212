@@ -6,16 +6,12 @@ package ca.uwo.pricingStrategies.individual;
  */
 public class IndividualPricingStrategyFactory {
 	public static IndividualPricingStrategy create(String strategyChoice) {
-		if(strategyChoice.equals("IndividualPricingStrategy1")) {
+		if(strategyChoice.equals("default")) {
 			return new IndividualPricingStrategy1();
 		}
-		else if(strategyChoice.equals("IndividualPricingStrategy2")) {
+		else{
 			return new IndividualPricingStrategy2();
-		}
-		else {
-			return null;
-		}
-		
+		}		
 		
 	}
 
