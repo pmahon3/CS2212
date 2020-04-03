@@ -11,6 +11,7 @@ import ca.uwo.client.Buyer;
 import ca.uwo.client.Supplier;
 import ca.uwo.viewer.StockManager;
 import ca.uwo.viewer.restock.strategies.RestockStrategy;
+import ca.uwo.viewer.restock.strategies.RestockStrategyFactory;
 
 /**
  * @author kkontog, ktsiouni, mgrigori This class provides the main method to
